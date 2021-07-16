@@ -1,4 +1,4 @@
-install: install-argo get-password forward-port deploy-sample-workflow
+install: install-argo forward-port deploy-sample-workflow
 
 install-argo:
 	-echo "Make sure you are connected to the correct cluster"
