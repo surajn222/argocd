@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Argo.iml" filepath="$PROJECT_DIR$/.idea/Argo.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/cyberint-data-processing/.idea/cyberint-data-processing.iml" filepath="$USER_HOME$/PycharmProjects/cyberint-data-processing/.idea/cyberint-data-processing.iml" />
     </modules>
   </component>
 </project>

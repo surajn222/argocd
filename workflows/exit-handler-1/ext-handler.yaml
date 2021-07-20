@@ -1,0 +1,63 @@
+#Submit template with exit handler
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: hello-world-
+  namespace: argo
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+  annotations:
+    workflows.argoproj.io/description: |
+      This is a simple hello world example.
+      You can also run it in Python: https://couler-proj.github.io/couler/examples/#hello-world
+
+spec:
+  entrypoint: whalesay
+  onExit: exit-handler
+  templates:
+  - name: whalesay
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo Running Container!"]
+
+
+  - name: exit-handler
+    steps:
+    - - name: notify
+        template: send-email
+      - name: successful2
+        template: successful2
+        when: "{{workflow.status}} == Succeeded"
+      - name: failed
+        template: failed
+        when: "{{workflow.status}} != Succeeded"
+  - name: send-email
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      # Tip: {{workflow.failures}} is a JSON list. If you're using bash to read it, we recommend using jq to manipulate
+      # it. For example:
+      #
+      # echo "{{workflow.failures}}" | jq -r '.[] | "Failed Step: \(.displayName)\tMessage: \(.message)"'
+      #
+      # Will print a list of all the failed steps and their messages. For more info look up the jq docs.
+      # Note: jq is not installed by default on the "alpine:latest" image, however it can be installed with "apk add jq"
+      args: ["echo send e-mail"]
+  - name: successful
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo Successful!"]
+  - name: failed
+    container:
+      image: alpine:latest
+      command: [sh, -c]
+      args: ["echo boohoo!"]
+  - name: successful2
+    dag:
+      tasks:
+      - name: Workflow-template
+        templateRef:
+          name: workflow-template-whalesay-template
+          template: whalesay-template

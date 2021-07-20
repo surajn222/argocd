@@ -1,0 +1,13 @@
+#Create Template
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: workflow-template-whalesay-template
+spec:
+  entrypoint: whalesay-template
+  templates:
+  - name: whalesay-template
+    container:
+      image: docker/whalesay
+      command: [cowsay]
+      args: ["TEMPLATE From deployment.yaml file"]

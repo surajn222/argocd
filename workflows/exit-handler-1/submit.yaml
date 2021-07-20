@@ -1,0 +1,16 @@
+#Submit template
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  namespace: argo
+  generateName: workflow-template-submit-
+spec:
+  entrypoint: diamond
+  templates:
+  - name: diamond
+    dag:
+      tasks:
+      - name: A
+        templateRef:
+          name: workflow-template-whalesay-template
+          template: whalesay-template
